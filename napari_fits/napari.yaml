@@ -1,0 +1,17 @@
+name: napari-fits
+display_name: FITS Reader
+contributions:
+  commands:
+    - id: napari-fits.get_fits_reader
+      python_name: napari_fits._reader:get_fits_reader
+      title: A reader for FITS images.
+    - id: napari-fits.get_fits_reader_widget
+      python_name: napari_fits._widget:get_fits_reader_widget
+      title: A widget for reading FITS images.
+  readers:
+    - command: napari-fits.get_fits_reader
+      accepts_directories: false
+      filename_patterns: ["*.fits"]
+  widgets:
+    - command: napari-fits.get_fits_reader_widget
+      display_name: FITS Reader

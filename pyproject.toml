@@ -1,0 +1,57 @@
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "napari-fits"
+version = "0.0.1"
+description = "A plugin to read FITS images within napari."
+license="BSD-3-Clause"
+authors = ["Philipp Plewa <pmplewa@users.noreply.github.com>"]
+readme = "README.md"
+repository = "https://github.com/pmplewa/napari-fits"
+classifiers = [
+    "Framework :: napari",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Image Processing",
+]
+
+[tool.poetry.dependencies]
+python = ">=3.8, <3.11"
+dask = ">=2022"
+astropy = "5.*"
+magicgui = "0.*"
+napari = "0.4.*"
+
+[tool.poetry.group.dev.dependencies]
+black = "22.3.*"
+invoke = "1.7.*"
+isort = "5.10.*"
+mypy= "==0.990"
+pylint = "2.13.*"
+pytest = "7.2.*"
+pytest-cov = "4.0.*"
+pytest-qt = "4.2.*"
+
+[tool.poetry.plugins."napari.manifest"]
+napari-fits = "napari_fits:napari.yaml"
+
+[tool.isort]
+profile = "black"
+
+[tool.mypy]
+exclude = ["venv"]
+
+[[tool.mypy.overrides]]
+module = [
+    "astropy.*",
+    "invoke.*",
+    "napari.*",
+]
+ignore_missing_imports = true
+
+[tool.pylint."MESSAGES CONTROL"]
+disable = """
+missing-docstring,
+"""
