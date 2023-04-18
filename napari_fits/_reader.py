@@ -1,12 +1,12 @@
 from pathlib import Path
-from typing import Callable, Generator, List, Optional, Sequence, Union, cast
+from typing import Callable, Generator, Sequence, cast
 
 import dask.array as da
 from astropy.io import fits
 from napari.types import LayerDataTuple
 
 
-def get_fits_reader(path: Union[str, Sequence[str]]) -> Optional[Callable]:
+def get_fits_reader(path: str | Sequence[str]) -> Callable | None:
     if not isinstance(path, str):
         return None
 
@@ -17,7 +17,7 @@ def get_fits_reader(path: Union[str, Sequence[str]]) -> Optional[Callable]:
 
 
 def _read_fits(
-    path: Union[str, Path], *, memmap: bool = False
+    path: str | Path, *, memmap: bool = False
 ) -> Generator[LayerDataTuple, None, None]:
     hdul = fits.open(path, memmap=memmap)
 
@@ -35,7 +35,7 @@ def _read_fits(
         yield cast(LayerDataTuple, (layer_data, layer_params, layer_type))
 
 
-def read_fits(path: Union[str, Path]) -> List[LayerDataTuple]:
+def read_fits(path: str | Path) -> list[LayerDataTuple]:
     try:
         return list(_read_fits(path, memmap=True))
     except ValueError:
