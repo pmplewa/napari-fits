@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Callable, Generator, Sequence, cast
+from typing import Callable, Iterator, Sequence, cast
 
 import dask.array as da
 from astropy.io import fits
@@ -16,9 +16,7 @@ def get_fits_reader(path: str | Sequence[str]) -> Callable | None:
     return read_fits
 
 
-def _read_fits(
-    path: str | Path, *, memmap: bool = False
-) -> Generator[LayerDataTuple, None, None]:
+def _read_fits(path: str | Path, *, memmap: bool = False) -> Iterator[LayerDataTuple]:
     hdul = fits.open(path, memmap=memmap)
 
     for hdu in hdul:
@@ -29,7 +27,7 @@ def _read_fits(
             continue
 
         layer_data = da.from_array(hdu.data)
-        layer_params = dict(name=hdu.name, metadata=dict(header=hdu.header))
+        layer_params = {"name": hdu.name, "metadata": {"header": hdu.header}}
         layer_type = "image"
 
         yield cast(LayerDataTuple, (layer_data, layer_params, layer_type))
